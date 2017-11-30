@@ -1,0 +1,29 @@
+@extends('layouts.master')
+
+@section('header')
+    Create New %%title%%
+@stop
+@section('content')
+    {!! Form::open(['url' => '%%crudName%%', 'class' => 'form-horizontal', 'id'=>'frmEdit']) !!}
+    
+    @include('%%crudName%%._form')
+
+    <div class="form-group">
+            <p>&nbsp;</p>
+            {!! link_to(URL::previous(), 'Cancel', ['class' => 'btn btn-default']) !!}
+            {!! Form::submit('Create', ['class' => 'btn btn-primary']) !!}
+    </div>
+    {!! Form::close() !!}
+
+    @include('errors.list')
+@stop
+@section('view_script_ext')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).ready(function() {
+
+            });
+        });
+    </script>
+
+@stop

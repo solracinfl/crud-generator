@@ -5,115 +5,117 @@ namespace DummyNamespace;
 use DummyRootNamespaceHttp\Requests;
 use DummyRootNamespaceHttp\Controllers\Controller;
 
-use DummyRootNamespace{{modelNamespace}}{{modelName}};
-use Illuminate\Http\Request;
+use DummyRootNamespaceModels\{{crudNamePluralCap}};
+use App\Http\Requests\{{crudNamePluralCap}}Request;
+
+use DB;
+use Cookie;
+use Auth;
+use Carbon\Carbon;
+use App\Helpers\Helper;
+
+
 
 class DummyClass extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index(Request $request)
+	public function __construct()
     {
-        $keyword = $request->get('search');
-        $perPage = {{pagination}};
+        $this->middleware('auth');
+        $this->middleware('checkpermission');
 
-        if (!empty($keyword)) {
-            ${{crudName}} = {{modelName}}::{{whereSnippet}}paginate($perPage);
-        } else {
-            ${{crudName}} = {{modelName}}::paginate($perPage);
-        }
-
-        return view('{{viewPath}}{{viewName}}.index', compact('{{crudName}}'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
-    {
-        return view('{{viewPath}}{{viewName}}.create');
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return Response
+	 */
+	public function index()
+	{
+		${{crudNamePlural}} = Helper::get{{crudNamePluralCap}}();
+		return view('{{crudName}}.index', compact('{{crudNamePlural}}'));
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function store(Request $request)
-    {
-        {{validationRules}}
-        $requestData = $request->all();
-        {{fileSnippet}}
-        {{modelName}}::create($requestData);
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return Response
+	 */
+	public function create()
+	{
+		return view('{{crudName}}.create');
+	}
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} added!');
-    }
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @return Response
+	 */
+	public function store({{crudNamePluralCap}}Request $request)
+	{
+        {{FacilityChild}}
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+		{{crudNamePluralCap}}::create($request->all());
+		return redirect('{{crudName}}');
+	}
 
-        return view('{{viewPath}}{{viewName}}.show', compact('{{crudNameSingular}}'));
-    }
+	/**
+	 * Display the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function show($id)
+	{
+		${{crudNameSingular}} = {{crudNamePluralCap}}::findOrFail($id);
+		return view('{{crudName}}.show', compact('{{crudNameSingular}}'));
+	}
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit($id)
-    {
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function edit($id)
+	{
+		${{crudNameSingular}} = {{crudNamePluralCap}}::findOrFail($id);
+		return view('{{crudName}}.edit', compact('{{crudNameSingular}}'));
+	}
 
-        return view('{{viewPath}}{{viewName}}.edit', compact('{{crudNameSingular}}'));
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function update($id, {{crudNamePluralCap}}Request $request)
+	{
+		//$this->validate($request, ['name' => 'required']); // Uncomment and modify if needed.
+		${{crudNameSingular}} = {{crudNamePluralCap}}::findOrFail($id);
+		${{crudNameSingular}}->update($request->all());
+		return redirect('{{crudName}}');
+	}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function update(Request $request, $id)
-    {
-        {{validationRules}}
-        $requestData = $request->all();
-        {{fileSnippet}}
-        ${{crudNameSingular}} = {{modelName}}::findOrFail($id);
-        ${{crudNameSingular}}->update($requestData);
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return Response
+	 */
+	public function destroy($id)
+	{
+		try {
+			{{crudNamePluralCap}}::destroy($id);
+			return redirect('{{crudName}}');
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} updated!');
-    }
+		} catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->withErrors('Record cannot be deleted, the record has other records that depend on it.');
+		}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function destroy($id)
-    {
-        {{modelName}}::destroy($id);
 
-        return redirect('{{routeGroup}}{{viewName}}')->with('flash_message', '{{modelName}} deleted!');
-    }
+	}
+
 }

@@ -19,6 +19,13 @@ composer require appzcoder/crud-generator --dev
 ## Documentation
 Go through to the [detailed documentation](doc#readme)
 
+Fork:
+Added the ability to generate all component with one command.  You can generate Model, Controller, Request and List, Detail and View pages.
+
+
+Example:
+ php artisan crud:generate MarketingCampaign 'Marketing Campaign' 'marketing_campaign_id' 'marketing_campaign' true  --fields=‘marketing_campaign_type_id:select, marketing_campaign_lead_source_id:select, marketing_campaign_status_id:select, name:string, description:text, start_date:date, end_date:date, budget:amount, actual:amount, expected_revenue:amount, expected_response:decimal, active:checkbox'
+
 ## Screencast
 
 [![Screencast](http://img.youtube.com/vi/831-PFBsYfw/0.jpg)](https://www.youtube.com/watch?v=K2G3kMQtY5Y)

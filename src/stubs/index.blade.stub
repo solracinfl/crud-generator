@@ -1,0 +1,39 @@
+@extends('layouts.master')
+
+@section('header')
+    %%title%%s <a href="{{ url('/%%crudName%%/create') }}" class="btn btn-primary pull-right btn-sm">Add New %%title%%</a>
+@stop
+@section('content')
+
+    <div class="table">
+        <table id="dataList" class="table table-bordered table-striped table-hover">
+            <thead>
+            <tr>
+                %%formHeadingHtml%%<th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($%%crudNamePlural%% as $item)
+                <tr>
+                    %%formBodyHtml%%
+                    <td nowrap="nowrap"><a href="{{ url('/%%crudName%%/'.$item->%%key%%.'/edit') }}"><button type="submit" class="btn btn-primary btn-xs">Edit</button></a>&nbsp;{!! Form::open(['method'=>'delete','action'=>['%%crudNameCap%%Controller@destroy',$item->%%key%%], 'style' => 'display:inline']) !!}<button type="submit" class="btn btn-danger btn-xs"  onclick="return confirm('Are you sure you want to delete the item?')" >Delete</button>{!! Form::close() !!}</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+    @include('errors.list')
+@stop
+
+@section('view_script')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#dataList').dataTable({
+                "columns": [ %%indexColumns%%, {"orderable": false }],
+                stateSave: true
+            });
+            $('input[type="search"]').attr('style', 'width:170px;');
+        });
+
+    </script>
+@stop

@@ -1,0 +1,31 @@
+@extends('layouts.master')
+@section('header')
+    Edit %%title%%
+@stop
+
+@section('content')
+
+    {!! Form::model($%%crudNameSingular%%, ['method' => 'PATCH', 'action' => ['%%crudNameCap%%Controller@update', $%%crudNameSingular%%->%%key%%], 'class' => 'form-horizontal', 'id'=>'frmEdit']) !!}
+
+    @include('%%crudName%%._form')
+
+    <div class="form-group">
+            <p>&nbsp;</p>
+            {!! link_to(URL::previous(), 'Cancel', ['class' => 'btn btn-default']) !!}
+            {!! Form::submit('Update', ['class' => 'btn btn-primary']) !!}
+    </div>
+    {!! Form::close() !!}
+
+    @include('errors.list')
+
+@stop
+@section('view_script_ext')
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $(document).ready(function() {
+
+            });
+        });
+    </script>
+
+@stop

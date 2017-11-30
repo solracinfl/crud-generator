@@ -1,0 +1,17 @@
+@extends('layouts.master')
+
+@section('header')
+    %%title%%
+@stop
+
+@section('content')
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            %%formBodyHtmlForShowOnlyView%%
+        </table>
+        {!! link_to(URL::previous(), 'Return', ['class' => 'btn btn-primary']) !!}
+
+    </div>
+
+@stop
